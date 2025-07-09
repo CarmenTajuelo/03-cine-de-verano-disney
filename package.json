@@ -1,0 +1,24 @@
+{
+  "name": "03-cine-de-verano-disney",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "api-fake": "json-server --watch server/db.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CarmenTajuelo/03-cine-de-verano-disney.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CarmenTajuelo/03-cine-de-verano-disney/issues"
+  },
+  "homepage": "https://github.com/CarmenTajuelo/03-cine-de-verano-disney#readme",
+  "dependencies": {
+    "json-server": "^1.0.0-beta.3"
+  }
+}

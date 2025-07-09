@@ -1,0 +1,34 @@
+{
+  "films": [
+    {
+      "id": "1",
+      "title": "El Rey León",
+      "director": "Roger Allers",
+      "film_description": "Un joven león llamado Simba debe enfrentar su destino como heredero del trono después de la muerte de su padre Mufasa. Con la ayuda de sus amigos Timón y Pumba, y guiado por el espíritu de su padre, Simba aprende sobre el círculo de la vida y regresa para reclamar su lugar como rey de la Roca del Rey."
+    },
+    {
+      "id": "2",
+      "title": "Frozen",
+      "director": "Chris Buck",
+      "film_description": "La historia de dos hermanas, Elsa y Anna, en el reino de Arendelle. Elsa posee poderes mágicos para crear hielo y nieve, pero después de herir accidentalmente a Anna, se aísla del mundo. Cuando sus poderes se revelan públicamente, Elsa huye y Anna emprende un viaje épico para encontrarla y salvar su reino del invierno eterno."
+    },
+    {
+      "id": "3",
+      "title": "Moana",
+      "director": "Ron Clements",
+      "film_description": "Una joven polinesia llamada Moana se embarca en una aventura oceánica para salvar su isla natal. Con la ayuda del semidiós Maui, debe encontrar la diosa Te Fiti y restaurar el corazón robado para devolver la vida a su mundo. Una historia sobre autodescubrimiento, valentía y la conexión con la naturaleza."
+    },
+    {
+      "id": "4",
+      "title": "Coco",
+      "director": "Lee Unkrich",
+      "film_description": "Miguel, un niño de 12 años con sueños de convertirse en músico, se transporta mágicamente a la Tierra de los Muertos durante el Día de los Muertos. Allí debe encontrar a su tatarabuelo músico para regresar al mundo de los vivos antes del amanecer, mientras descubre la verdadera historia de su familia."
+    },
+    {
+      "id": "5",
+      "title": "La Bella y la Bestia",
+      "director": "Gary Trousdale",
+      "film_description": "Belle, una joven inteligente y soñadora, se convierte en prisionera de una Bestia en su castillo encantado. A medida que conoce a los sirvientes del castillo transformados en objetos mágicos, Belle descubre que detrás de la apariencia aterradora de la Bestia se esconde un corazón bondadoso, y el amor verdadero puede romper cualquier maldición."
+    }
+  ]
+}
