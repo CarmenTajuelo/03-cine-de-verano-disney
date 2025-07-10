@@ -51,3 +51,32 @@ const printFilms = async () => {
     });
 }
 printFilms();
+
+
+
+// ========================================
+//  CREATE <<>> POST
+// ========================================
+//1. Creamos funcion para crear nuevas películas
+//newFilm recibe como parámetro los datos de la película nueva que queremos crear
+const createFilm = async (newFilm) => {
+    //2. Crear función que hace la petición POST (enviar datos)
+    const response = await fetch(URL_API_FILMS, {
+        //3. Configurar el método para decir que ENVIAMOS datos
+        method: "POST",
+        //4. Configurar tipo de FORMATO (JSON) que tienen los datos
+        headers: { "Content-Type": "application/json" },
+        //5. Enviar datos de la película. 
+        //body contiene los datos que queremos enviar al servidor
+        // JSON.stringify convierte el objeto newFilm a formato JSON, 
+        // porque newFilm es un objeto JavaScript, y el servidor necesita recibir los datos como texto JSON. 
+        // "JSON.stringify()" hace esa conversión.
+        body: JSON.stringify(newFilm)
+    });
+    //5. Convertir respuesta del servidor a formato JavaScript
+    const createdFilm = await response.json();
+    //6. Devuelve el resultado de la función
+    return createdFilm;
+};
+
+createFilm()
