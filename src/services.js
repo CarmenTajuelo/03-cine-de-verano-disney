@@ -80,3 +80,37 @@ const createFilm = async (newFilm) => {
 };
 
 createFilm()
+
+// ==========================================
+//  Form to Create New Films - Configurarion
+// ==========================================
+//1. Conectar el formulario con JavaScript. 
+// Busca el formulario en el HTML por su ID y lo guarda en filmForm para poder usarlo
+const filmForm = document.getElementById("film-form"); 
+
+//2. Escuchar cuando se envía el formulario
+//Escucha cuando algo pasa con el formulario, específicamente cuando se envía el formulario al hacer click en el boton submit
+filmForm.addEventListener("submit", async (event) =>{
+//3. Evitar que la página se recargue cuando se envía el formulario (comportamiento by default)
+event.preventDefault();
+//4. Obtener la información del formulario
+//Obtitne el texto que el usuario escribió en los diferentes campos
+const title = document.getElementById("title").value;
+const director = document.getElementById("director").value;
+const description = document.getElementById("description").value;
+
+//5. Crear objeto llamado "newFilm" con los datos. 
+// Porque la función "createFilm" espera recibir un objeto con esta estructura exacta
+const newFilm = {
+    title: title, 
+    director: director,
+    description: description
+}; 
+//6. Llamar a la función createFilm
+//createFilm(newFilm) llama a la función que creamos antes y le pasa los datos del usuario
+//guarda la pelicula creada con el id que le asignó el servidor
+const createdFilm = await createFilm(newFilm); 
+//7.Limpiar el formulario para que esté listo para introducir otra película
+filmForm.reset();
+
+});
