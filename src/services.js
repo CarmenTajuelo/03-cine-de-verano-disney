@@ -83,35 +83,65 @@ const createFilm = async (newFilm) => {
 // ==========================================
 //1. Conectar el formulario con JavaScript. 
 // Busca el formulario en el HTML por su ID y lo guarda en filmForm para poder usarlo
-const filmForm = document.getElementById("film-form"); 
+const filmForm = document.getElementById("film-form");
 
 //2. Escuchar cuando se envía el formulario
 //Escucha cuando algo pasa con el formulario, específicamente cuando se envía el formulario al hacer click en el boton submit
-filmForm.addEventListener("submit", async (event) =>{
-//3. Evitar que la página se recargue cuando se envía el formulario (comportamiento by default)
-event.preventDefault();
-//4. Obtener la información del formulario
-//Obtitne el texto que el usuario escribió en los diferentes campos
-const title = document.getElementById("title").value;
-const director = document.getElementById("director").value;
-const description = document.getElementById("description").value;
+filmForm.addEventListener("submit", async (event) => {
+    //3. Evitar que la página se recargue cuando se envía el formulario (comportamiento by default)
+    event.preventDefault();
+    //4. Obtener la información del formulario
+    //Obtitne el texto que el usuario escribió en los diferentes campos
+    const title = document.getElementById("title").value;
+    const director = document.getElementById("director").value;
+    const description = document.getElementById("description").value;
 
-//5. Crear objeto llamado "newFilm" con los datos. 
-// Porque la función "createFilm" espera recibir un objeto con esta estructura exacta
-const newFilm = {
-    title: title, 
-    director: director,
-    description: description
-}; 
-//6. Llamar a la función createFilm
-//createFilm(newFilm) llama a la función que creamos antes y le pasa los datos del usuario
-//guarda la pelicula creada con el id que le asignó el servidor
-const createdFilm = await createFilm(newFilm); 
-//7.Limpiar el formulario para que esté listo para introducir otra película
-filmForm.reset();
-//8. Actualizar la lista de películas en pantalla
-filmContainer.innerHTML = "", 
-//9. Vuelve a cargar y mostrar todas las películas
-await printFilms();
+    //5. Crear objeto llamado "newFilm" con los datos. 
+    // Porque la función "createFilm" espera recibir un objeto con esta estructura exacta
+    const newFilm = {
+        title: title,
+        director: director,
+        description: description
+    };
+    //6. Llamar a la función createFilm
+    //createFilm(newFilm) llama a la función que creamos antes y le pasa los datos del usuario
+    //guarda la pelicula creada con el id que le asignó el servidor
+    const createdFilm = await createFilm(newFilm);
+    //7.Limpiar el formulario para que esté listo para introducir otra película
+    filmForm.reset();
+    //8. Actualizar la lista de películas en pantalla
+    filmContainer.innerHTML = "",
+        //9. Vuelve a cargar y mostrar todas las películas
+        await printFilms();
 
 });
+
+
+
+
+
+
+// ========================================
+//  DELETE <<>> DELETE
+// ========================================
+
+//1. Crear la función principal que va a eliminar la pelicula
+const deleteFilm = async (id) => {
+    //2. Petición al servidor y guarda la respuesta en "response"
+    const response = await fetch(`${URL_API_FILMS}/${id}`, {
+        //3. Manda la orden de eliminar
+        method: "DELETE",
+        //Info de cómo enviamos los datos
+        headers: {
+            //Especifica que trabajamos con JSON
+            'Content-Type': 'application/json'
+        }
+    });
+    //4. Verificar si la eliminación fue exitosa
+    if (response.ok) {
+        console.log(`Película con ID ${id} eliminada`);
+        printFilms();
+    } else {
+        console.error("Error al eliminar la película");
+    }
+}
