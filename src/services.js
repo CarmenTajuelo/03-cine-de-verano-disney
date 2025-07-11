@@ -29,6 +29,9 @@ let filmContainer = document.getElementById("film-section");
 
 //1. Crear funcion para mostrar películas en pantalla
 const printFilms = async () => {
+    //Borra el contenido del contenedor de las películas
+    filmContainer.innerHTML = "";
+    
     //2. Obtener los datos de las películas desde getAllFilms
     const listFilms = await getAllFilms();
     //console.log("Lista de peliculas:", listFilms)
@@ -43,7 +46,10 @@ const printFilms = async () => {
         <h3>Director de la película: ${film.director}</h3>
         <p><b>Descripción de la película:</b> ${film.description}</p>
         <p><b>ID de la película:</b> ${film.id}</p>
+        <button onclick="deleteFilm('${film.id}')">Eliminar</button>
         </div>`;
+        
+        
 
 
     });

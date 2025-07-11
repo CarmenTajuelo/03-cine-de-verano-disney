@@ -1,40 +1,7 @@
 {
   "films": [
     {
-      "id": "1",
-      "title": "El Rey León",
-      "director": "Roger Allers",
-      "description": "Un joven león llamado Simba debe enfrentar su destino como heredero del trono después de la muerte de su padre Mufasa. Con la ayuda de sus amigos Timón y Pumba, y guiado por el espíritu de su padre, Simba aprende sobre el círculo de la vida y regresa para reclamar su lugar como rey de la Roca del Rey."
-    },
-    {
-      "id": "5",
-      "title": "La Bella y la Bestia",
-      "director": "Gary Trousdale",
-      "description": "Belle, una joven inteligente y soñadora, se convierte en prisionera de una Bestia en su castillo encantado. A medida que conoce a los sirvientes del castillo transformados en objetos mágicos, Belle descubre que detrás de la apariencia aterradora de la Bestia se esconde un corazón bondadoso, y el amor verdadero puede romper cualquier maldición."
-    },
-    {
-      "id": "24f4",
-      "title": "Moana",
-      "director": "Ron Clements",
-      "description": "Una aventura oceánica con una joven valiente"
-    },
-    {
-      "id": "8000"
-    },
-    {
-      "id": "9dc5",
-      "title": "Moana",
-      "director": "Ron Clements",
-      "description": "Una aventura oceánica con una joven valiente"
-    },
-    {
-      "id": "1841"
-    },
-    {
       "id": "525a"
-    },
-    {
-      "id": "d581"
     },
     {
       "id": "a1df",
