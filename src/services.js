@@ -19,9 +19,7 @@ const getAllFilms = async () => {
 
     //console.log("Datos convertidos:", filmData);
     return filmData;
-}
-
-getAllFilms();
+};
 
 
 // ========================================
@@ -42,14 +40,14 @@ const printFilms = async () => {
         //printFilms.innerHTML = `<div><h1>${book.title}</h1></div>`;
         filmContainer.innerHTML += `<div data-film-id="${film.id}">
         <h1>Título de la película: ${film.title}</h1>
-        <h2>Director de la película: ${film.director}</h2>
+        <h3>Director de la película: ${film.director}</h3>
         <p><b>Descripción de la película:</b> ${film.description}</p>
         <p><b>ID de la película:</b> ${film.id}</p>
         </div>`;
 
 
     });
-}
+};
 printFilms();
 
 
@@ -79,7 +77,6 @@ const createFilm = async (newFilm) => {
     return createdFilm;
 };
 
-createFilm()
 
 // ==========================================
 //  Form to Create New Films - Configurarion
@@ -112,5 +109,9 @@ const newFilm = {
 const createdFilm = await createFilm(newFilm); 
 //7.Limpiar el formulario para que esté listo para introducir otra película
 filmForm.reset();
+//8. Actualizar la lista de películas en pantalla
+filmContainer.innerHTML = "", 
+//9. Vuelve a cargar y mostrar todas las películas
+await printFilms();
 
 });
