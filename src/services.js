@@ -41,7 +41,7 @@ const printFilms = async () => {
         //console.log("Director de la pelicula: ", film.director);
         //console.log("Descripcion de la película:", film.description);
         //printFilms.innerHTML = `<div><h1>${book.title}</h1></div>`;
-        filmContainer.innerHTML += `<div data-film-id="${film.id}">
+        filmContainer.innerHTML += `<div data-film-id="${film.id}" style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
         <h1>Título de la película: ${film.title}</h1>
         <h3>Director de la película: ${film.director}</h3>
         <p><b>Descripción de la película:</b> ${film.description}</p>
