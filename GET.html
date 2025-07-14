@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Instrucciones para crear función GET</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 2rem;
+        }
+
+        h1 {
+            font-size: 2rem;
+        }
+
+        h2 {
+            color: #2c3e50;
+        }
+
+        h3 {
+            color: #2980b9;
+        }
+
+        pre {
+            background-color: #f4f4f4;
+            padding: 1rem;
+            border-left: 4px solid #ccc;
+            overflow-x: auto;
+        }
+
+        code {
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        #read-crud {
+            background-color: rgb(255, 238, 217);
+        }
+
+        #print-crud {
+            background-color: rgb(241, 255, 240)
+        }
+
+        #create-crud {
+            background-color: rgb(254, 235, 254);
+        }
+    </style>
+</head>
+
+<body>
+
+    <section id="read-crud">
+        <h1>FUNCIÓN: READ</h1>
+
+
+        <h2>Paso 1: Configurar la estructura de archivos</h2>
+        <p>Primero necesitamos organizar los archivos para los servicios. Te sugiero crear una carpeta para los
+            servicios:
+        </p>
+        <pre><code>src/
+          services/
+        movieService.js</code></pre>
+        <p>Crea una constante que se llame <code>"const URL_API_FILMS = "http://localhost:3000/films";"</code>.</p>
+
+        <p>El siguiente paso lógico es crear la función que va a realizar la petición para obtener todas las películas.
+        </p>
+
+
+        <h2>Paso 2: Crear la función de lectura básica</h2>
+        <p>El siguiente paso es crear una función que use esa URL para hacer la petición. Te propongo que escribas esta
+            línea:</p>
+        <pre><code>const getAllFilms = async () =&gt; {</code></pre>
+        <h3>¿Por qué esta línea?</h3>
+        <p><code>const getAllFilms =</code>: Creamos una función con un nombre descriptivo que indica que va a obtener
+            TODAS
+            las películas.</p>
+        <p><code>async</code>: La ponemos como asíncrona porque las peticiones HTTP tardan tiempo y no queremos que la
+            aplicación se "congele" esperando la respuesta.</p>
+        <p><code>() =&gt;</code>: Es la sintaxis de función flecha (arrow function) de JavaScript.</p>
+        <h3>¿Qué es una arrow function?</h3>
+        <p>Una arrow function (función flecha) es una forma más corta de escribir funciones en JavaScript. Se llama así
+            por
+            la "flecha" <code>=&gt;</code> que usa.</p>
+        <p>Forma tradicional:</p>
+        <pre><code>function getAllFilms() {
+          // código aquí
+        }</code></pre>
+        <p>Forma con arrow function:</p>
+        <pre><code>const getAllFilms = () =&gt; {
+          // código aquí
+        }</code></pre>
+
+        <h3>¿Por qué usar arrow functions?</h3>
+        <p>
+        <ol>
+            <li>Más corta: Menos código para escribir</li>
+            <li>Moderna: Es la forma actual que se usa en JavaScript</li>
+            <li>Común en servicios: Prácticamente todos los servicios modernos las usan</li>
+        </ol>
+        </p>
+        <p>En tu caso específico:</p>
+        <pre><code>const getAllFilms = async () =&gt; {</code></pre>
+
+        <p>Esto significa: "Crea una función llamada getAllFilms que es asíncrona y no recibe parámetros"</p>
+        <p>Ya tienes:</p>
+        <pre><code>const URL_API_FILMS = "http://localhost:3000/films";
+        const getAllFilms = async () => {</code></pre>
+
+
+        <h2>Paso 3: Hacer la petición HTTP</h2>
+        <p>El siguiente paso es escribir la línea que hace la petición al servidor. Añade esta línea dentro de la
+            función:
+        </p>
+        <pre><code>const response = await fetch(URL_API_FILMS);</code></pre>
+        <h3>¿Qué hace esta línea?</h3>
+        <p><code>fetch()</code> = Es la función de JavaScript que hace peticiones HTTP (como abrir una página web)</p>
+        <p><code>URL_API_FILMS</code> = Usa la URL que definiste antes (<code>http://localhost:3000/films</code>)</p>
+        <p><code>await</code> = Espera a que el servidor responda antes de continuar</p>
+        <p><code>const response</code> = Guarda la respuesta del servidor en una variable llamada "response"</p>
+        <p><b>En palabras simples</b>: "Ve a buscar los datos a esa URL y cuando llegue la respuesta, guárdala en
+            response"
+        </p>
+        <p>Ahora tienes:</p>
+        <pre><code>
+        const URL_API_FILMS = "http://localhost:3000/films";<br>
+        const getAllFilms = async () => {<br>
+        &nbsp;&nbsp;const response = await fetch(URL_API_FILMS);
+        </code></pre>
+
+
+        <h2>Paso 4: Convertir la respuesta a JSON</h2>
+        <p>El siguiente paso es añadir esta línea:</p>
+        <pre><code>const data = await response.json();</code></pre>
+        <h3>¿Qué hace esta línea?</h3>
+        <p><code>response.json()</code> = Convierte la respuesta del servidor a formato JSON (que es como JavaScript
+            puede
+            entender los datos)</p>
+        <p><code>await</code> = Espera a que termine la conversión</p>
+        <p><code>const data</code> = Guarda los datos ya convertidos en una variable llamada "data"</p>
+        <h3>¿Por qué necesitamos esto?</h3>
+        <p>Cuando el servidor te envía los datos, vienen en formato "crudo" (como un mensaje cifrado). La función
+            <code>.json()</code> los "traduce" a un formato que JavaScript puede usar.
+        </p>
+        <p><b>En palabras simples</b>: "Toma la respuesta del servidor y conviértela en datos que pueda usar"</p>
+        <p>Ahora tienes:</p>
+        <pre><code>const URL_API_FILMS = "http://localhost:3000/films";
+        const getAllFilms = async () => {
+        &nbsp;&nbsp;const response = await fetch(URL_API_FILMS);
+        &nbsp;&nbsp;const data = await response.json();</code></pre>
+
+
+        <h2>Paso 5: Devolver los datos</h2>
+        <p>El siguiente paso es añadir esta línea:</p>
+        <pre><code>return data;</code></pre>
+        <h3>¿Qué hace esta línea?</h3>
+        <p><code>return</code> = Devuelve/entrega los datos a quien llamó a la función</p>
+        <p><code>data</code> = Los datos que obtuvimos del servidor en el paso anterior</p>
+        <h3>¿Por qué necesitamos return?</h3>
+        <p>Imagina que tu función es como un mensajero:</p>
+        <ul>
+            <li>Va a buscar las películas (<code>fetch</code>)</li>
+            <li>Las traduce para que las entiendas (<code>json</code>)</li>
+            <li>Te las entrega (<code>return</code>)</li>
+        </ul>
+        <p>Sin <code>return</code>, sería como si el mensajero fuera a buscar tus películas pero nunca te las diera.</p>
+        <p><b>En palabras simples</b>: "Entrega los datos de las películas a quien use esta función"</p>
+        <p>Ahora tienes:</p>
+        <pre>
+        <code>
+        const URL_API_FILMS = "http://localhost:3000/films";<br>
+        const getAllFilms = async () => {<br>
+        &nbsp;&nbsp;const response = await fetch(URL_API_FILMS);<br>
+        &nbsp;&nbsp;const data = await response.json();<br>
+        &nbsp;&nbsp;return data;<br>
+        };
+        </code>
+        </pre>
+
+
+        <h2>Paso 6: Cómo usar la función</h2>
+        <p>Ahora que ya tienes la función creada, el siguiente paso es saber cómo usarla. Puedes usarla de esta forma:
+        </p>
+        <pre><code>getAllFilms();</code></pre>
+        <h3>¿Qué hace esta línea?</h3>
+        <p>Llama/ejecuta la función que creaste</p>
+        <p>Va a tu json-server, obtiene las películas y te las devuelve</p>
+        <h3>¿Dónde la usarías?</h3>
+        <p>Por ejemplo, si quieres mostrar las películas cuando se cargue la página, o cuando alguien haga clic en un
+            botón.
+        </p>
+    </section>
+
+    <section id="print-crud">
+        <h1>FUNCIÓN: PRINT</h1>
+        <h2>Paso 1: Crear la función para mostrar en pantalla</h2>
+
+        <pre><code>const showFilmsOnScreen = async () => {</code></pre>
+
+        <h3>¿Qué hace esta línea?</h3>
+        <ul>
+            <li><code>const showFilmsOnScreen</code> = Crea una función con un nombre descriptivo que indica que va a
+                mostrar las películas en pantalla</li>
+            <li><code>async</code> = La ponemos como asíncrona porque va a usar la función <code>getAllFilms()</code>
+                que también es asíncrona</li>
+            <li><code>() =></code> = La sintaxis de función (igual que la anterior)</li>
+        </ul>
+
+        <h3>¿Por qué necesitamos una función separada?</h3>
+        <p>Es como tener dos trabajadores:</p>
+        <ul>
+            <li>Uno que va a buscar las películas (<code>getAllFilms</code>)</li>
+            <li>Otro que las muestra en pantalla (<code>showFilmsOnScreen</code>)</li>
+        </ul>
+
+        <p><b>En palabras simples</b>: "Crea una función que se encargue de mostrar las películas en la pantalla"</p>
+
+
+        <h2>Paso 2: Obtener los datos de las películas</h2>
+
+        <p>El siguiente paso es añadir esta línea dentro de la función:</p>
+
+        <pre><code>const filmData = await getAllFilms();</code></pre>
+
+        <h3>¿Qué hace esta línea?</h3>
+        <ul>
+            <li><code>getAllFilms()</code> = Llama a la función que creamos antes para obtener las películas</li>
+            <li><code>await</code> = Espera a que termine de traer los datos</li>
+            <li><code>const filmData</code> = Guarda las películas en una variable llamada "filmData"</li>
+        </ul>
+
+        <p><b>En palabras simples</b>: "Ve a buscar todas las películas usando la función anterior y guárdalas en
+            filmData"</p>
+
+        <p>Ahora tienes:</p>
+        <pre><code>const showFilmsOnScreen = async () => {
+            const listFilms = await getAllFilms();</code></pre>
+
+        <h2>Paso 3: Mostrar los datos en la consola (para probar)</h2>
+
+        <p>El siguiente paso es añadir esta línea:</p>
+        <pre><code>console.log(listFilms);</code></pre>
+
+        <h3>¿Qué hace esta línea?</h3>
+        <ul>
+            <li><code>console.log()</code> = Muestra información en la consola del navegador</li>
+            <li><code>listFilms</code> = Muestra la lista de películas que obtuvimos</li>
+        </ul>
+
+        <h3>¿Por qué empezamos con console.log?</h3>
+        <p>Es como hacer una prueba rápida. Antes de mostrar las películas bonitas en la pantalla, primero verificamos
+            que los datos lleguen correctamente.</p>
+
+        <h3>¿Dónde verás el resultado?</h3>
+        <p>En la consola del navegador (F12 → pestaña Console).</p>
+
+        <p><b>En palabras simples</b>: "Muestra las películas en la consola para verificar que todo funciona"</p>
+
+        <p>¡Exacto! Ahora que ya tienes la lista de películas, el siguiente paso es recorrer cada película para
+            mostrarlas una por una.</p>
+
+        <h2>Paso 4: Recorrer cada película</h2>
+        <p>El siguiente paso es añadir esta línea (puedes quitar o dejar el console.log):</p>
+        <pre><code>listFilms.forEach(film => {</code></pre>
+
+        <h3>¿Qué hace esta línea?</h3>
+        <ul>
+            <li><code>listFilms.forEach()</code> = Recorre cada elemento de la lista</li>
+            <li><code>film =></code> = Por cada película de la lista, la llamamos <code>film</code></li>
+            <li><code>{</code> = Abre el bloque de instrucciones</li>
+        </ul>
+        <h3>¿Cómo funciona?</h3>
+        <p>
+            Es como decir: "Para cada película en la lista, haz esto..."
+            Si tienes 10 películas, esta línea se ejecutará 10 veces, una vez por cada película.
+        </p>
+
+        <p><b>En palabras simples</b>: "Por cada película en la lista, ejecuta el código que ponga a continuación"</p>
+
+        <p>Ahora tienes:</p>
+        <pre><code>const showFilmsOnScreen = async () => {
+  const listFilms = await getAllFilms();
+  console.log(listFilms);
+  listFilms.forEach(film => {</code></pre>
+
+        <h2>Paso 5: Mostrar información de cada película</h2>
+        <p>El siguiente paso es añadir esta línea dentro del forEach:</p>
+        <pre><code>console.log(film);</code></pre>
+
+        <h3>¿Qué hace esta línea?</h3>
+
+        <p>
+            console.log(film) = Muestra en la consola la información de cada película individual
+            film = Es cada película por separado (no toda la lista)
+        </p>
+
+        <h3>¿Qué verás en la consola?</h3>
+        <p>Primero verás toda la lista (del console.log anterior), y después verás cada película por separado.</p>
+        <h3>¿Por qué hacemos esto?</h3>
+        <p>
+            Para ver qué propiedades tiene cada película (título, año, director, etc.) antes de mostrarlas bonitas en
+            pantalla.
+        </p>
+
+        <p><b>En palabras simples</b>: "Muestra cada película individual para ver qué información contiene"</p>
+        <p>Ahora tienes:</p>
+        <pre><code>const showFilmsOnScreen = async () => {
+  const listFilms = await getAllFilms();
+  console.log(listFilms);
+  listFilms.forEach(film => {
+    console.log(film);
+  });)</code></pre>
+
+        <h2>Paso 6: Probar y verificar las propiedades</h2>
+        <p>Ahora que ya tienes la función completa, el siguiente paso es ejecutarla para ver qué propiedades exactas
+            tienen tus películas.</p>
+        <h3>¿Qué hacer ahora?</h3>
+        <p>1. Ejecuta tu código (guarda el archivo y recarga la página)
+            2. Abre la consola del navegador (F12 → Console)
+            3. Mira qué información aparece
+
+        <h3>¿Qué deberías ver?</h3>
+        <p>La información de cada película con sus propiedades exactas (título, año, director, etc.)</p>
+
+        <h2>Paso 7: Descomentar para ver los datos</h2>
+        El siguiente paso es descomentar esta línea para ver la información:
+        <pre><code>console.log("titulo de la pelicula", film.tittle)</code></pre>
+        <p>Quita las // del principio para que quede así:</p>
+        <pre><code>listFilms.forEach(film => {
+    console.log("titulo de la pelicula", film.tittle)
+});</code></pre>
+
+
+        <h3>¿Qué hace esto?</h3>
+
+        <p>
+            Mostrará en consola cada título de película
+            Te permitirá ver si la propiedad se llama realmente "tittle" o tiene otro nombre
+        </p>
+
+        <h3>¿Por qué es importante?</h3>
+        <p>Necesitamos ver qué propiedades exactas tienen tus películas Disney para poder mostrarlas correctamente.</p>
+
+        <p>
+            Si descomentas el console log y ves la lista de cada título de las películas significa que:
+
+            Tu función funciona correctamente ✅
+            Las películas se están obteniendo bien ✅
+            La propiedad del título se llama "tittle" ✅
+        </p>
+
+        <h2>Paso 8: Ver todas las propiedades de cada película</h2>
+        <p>Ahora que sabemos que funciona, el siguiente paso es ver QUÉ OTRAS propiedades tiene cada película además del
+            título.</p>
+
+        <h3>Cambia esta línea:</h3>
+
+        <pre><code>javascriptconsole.log("titulo de la pelicula", film.tittle)</code></pre>
+        <h3>Por esta:</h3>
+
+        <pre><code>javascriptconsole.log(film)</code></pre>
+
+        <h3>¿Por qué este cambio?</h3>
+
+        <p>
+            Así verás toda la información completa de cada película
+            Podrás ver qué otros datos tienes (año, director, género, etc.)
+            Te ayudará a decidir qué mostrar en pantalla
+        </p>
+
+        <p>En palabras simples: "Muestra toda la información de cada película, no solo el título"</p>
+
+
+    </section>
+
+
+    <section id="create-crud">
+        <h1>FUNCIÓN: CREATE</h1>
+        <h2>Paso 1: Crear la función CREATE</h2>
+        <p>El siguiente paso sería crear una función para añadir nuevas películas a tu base de datos.</p>
+
+        <h3>¿Qué necesitarías?</h3>
+        <ul>
+            <li>Una función que envíe datos nuevos al servidor (POST)</li>
+            <li>Un formulario HTML para introducir los datos de la nueva película</li>
+            <li>Una función que tome los datos del formulario y los envíe</li>
+        </ul>
+
+        <h3>¿Por dónde empezamos?</h3>
+        <pre><code>const createFilm = async (filmData) => {</code></pre>
+
+
+        <h2>Paso 2: Crear la función CREATE</h2>
+        <p>El siguiente paso es añadir esta línea después de tu sección de PRINT:</p>
+
+        <pre><code>const createFilm = async (filmData) => {</code></pre>
+
+        <h3>¿Qué hace esta línea?</h3>
+        <ul>
+            <li><strong>const createFilm =</strong> Crea una función para añadir películas nuevas</li>
+            <li><strong>async =</strong> La ponemos asíncrona porque va a hacer una petición HTTP</li>
+            <li><strong>(filmData) =</strong> Recibe como parámetro los datos de la película nueva que queremos crear
+            </li>
+        </ul>
+
+        <h3>¿Qué es filmData?</h3>
+        <p>Es un objeto que contendrá la información de la película nueva, como:</p>
+
+        <pre><code>{
+  title: "Frozen",
+  director: "Chris Buck", 
+  description: "Una historia de dos hermanas..."
+}
+</code></pre>
+
+        <p><b>En palabras simples:</b> "Crea una función que reciba los datos de una película nueva"</p>
+
+        <p>Ahora tienes:</p>
+        <pre><code>const createFilm = async (newFilm) => {  }</code></pre>
+
+
+        <h2>Paso 3: Hacer la petición POST</h2>
+        <p>El siguiente paso es añadir esta línea dentro de la función:</p>
+
+        <pre><code>const response = await fetch(URL_API_FILMS, {</code></pre>
+
+        <h3>¿Qué hace esta línea?</h3>
+        <ul>
+            <li><strong>fetch(URL_API_FILMS, {</strong> = Hace una petición a la misma URL, pero ahora con opciones
+                adicionales</li>
+            <li>Las <strong>{</strong> abren un objeto de configuración para la petición</li>
+        </ul>
+
+        <h3>¿Por qué es diferente a la función READ?</h3>
+        <ul>
+            <li>En READ solo pedíamos datos (GET)</li>
+            <li>En CREATE vamos a enviar datos nuevos (POST)</li>
+            <li>Necesitamos configurar cómo enviar esos datos</li>
+        </ul>
+
+        <p><b>En palabras simples: </b>"Haz una petición a la URL, pero con configuración especial para enviar datos"
+        </p>
+
+
+        <h2>Paso 4: Configurar el método POST</h2>
+        <p>El siguiente paso es añadir esta línea:</p>
+
+        <pre><code>javascript
+method: "POST",
+</code></pre>
+
+        <h3>¿Qué hace esta línea?</h3>
+        <ul>
+            <li><strong>method: "POST"</strong> = Le dice al servidor que queremos ENVIAR datos nuevos (no solo
+                pedirlos)</li>
+            <li><strong>POST</strong> = Es el tipo de petición HTTP para crear/añadir cosas nuevas</li>
+        </ul>
+
+        <h3>¿Por qué POST y no GET?</h3>
+        <ul>
+            <li><strong>GET</strong> = "Dame datos" (como leer)</li>
+            <li><strong>POST</strong> = "Toma estos datos nuevos" (como crear)</li>
+        </ul>
+
+        <p><b>En palabras simples</b>: "Configura la petición para enviar datos nuevos al servidor"</p>
+
+        <p>Ahora tienes:</p>
+
+        <pre><code>const createFilm = async (newFilm) => {
+  const response = await fetch(URL_API_FILMS, {
+    method: "POST",
+</code></pre>
+
+        <h2>Paso 5: Configurar el tipo de contenido</h2>
+        <p>El siguiente paso es añadir esta línea:</p>
+
+        <pre><code>headers: {</code></pre>
+
+        <h3>¿Qué hace esta línea?</h3>
+        <ul>
+            <li><strong>headers: {</strong> = Abre una sección para configurar cómo enviar los datos</li>
+            <li>Los headers son como "etiquetas" que le dicen al servidor qué tipo de datos le estamos enviando</li>
+        </ul>
+
+        <h3>¿Por qué necesitamos headers?</h3>
+        <p>Es como poner una etiqueta en un paquete que dice "FRÁGIL" o "URGENTE". Le decimos al servidor: "Oye, estos
+            datos vienen en formato JSON"</p>
+
+        <p><b>En palabras simples</b>: "Abre la configuración para decirle al servidor qué tipo de datos enviamos"</p>
+
+        <p>Ahora tienes:</p>
+
+        <pre><code>const createFilm = async (newFilm) => {
+  const response = await fetch(URL_API_FILMS, {
+    method: "POST",
+    headers: {</code></pre>
+
+        <h2>Paso 6: Especificar el tipo de contenido JSON</h2>
+        <p>El siguiente paso es añadir esta línea:</p>
+
+        <pre><code>"Content-Type": "application/json"
+</code></pre>
+
+        <h3>¿Qué hace esta línea?</h3>
+        <ul>
+            <li><strong>"Content-Type"</strong> = Le dice al servidor qué formato tienen los datos</li>
+            <li><strong>"application/json"</strong> = Especifica que los datos están en formato JSON</li>
+        </ul>
+
+        <h3>¿Por qué JSON?</h3>
+        <ul>
+            <li>JSON es el formato estándar para enviar datos entre aplicaciones web</li>
+            <li>Tu json-server espera recibir los datos en este formato</li>
+            <li>Es como decir "los datos vienen en formato JSON, no en texto normal"</li>
+        </ul>
+
+        <p><b>En palabras simples</b>: "Avisa al servidor que los datos vienen en formato JSON"</p>
+
+        <p>Ahora tienes:</p>
+
+        <pre><code>const createFilm = async (newFilm) => {
+  const response = await fetch(URL_API_FILMS, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"},
+</code></pre>
+
+        <h2>Paso 7: Enviar los datos de la película</h2>
+        <p>El siguiente paso es añadir esta línea:</p>
+        <pre><code>body: JSON.stringify(newFilm)
+</code></pre>
+
+        <h3>¿Qué hace esta línea?</h3>
+        <p><code>body:</code> = Aquí van los datos que queremos enviar al servidor<br>
+            <code>JSON.stringify(newFilm)</code> = Convierte el objeto newFilm a formato JSON (texto)<br>
+            <code>newFilm</code> = Los datos de la película que recibimos como parámetro
+        </p>
+
+        <h3>¿Por qué JSON.stringify?</h3>
+        <ul>
+            <li><code>newFilm</code> es un objeto JavaScript</li>
+            <li>El servidor necesita recibir los datos como texto JSON</li>
+            <li><code>JSON.stringify()</code> hace esa conversión</li>
+        </ul>
+        <p><b>En palabras simples</b>: "Envía los datos de la película nueva convertidos a formato JSON"</p>
+
+        <p>Ahora tienes:</p>
+        <pre><code>const createFilm = async (newFilm) => {
+  const response = await fetch(URL_API_FILMS, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(newFilm)
+});
+</code></pre>
+
+        <h2>Paso 8: Convertir la respuesta del servidor</h2>
+        <p>El siguiente paso es añadir esta línea:</p>
+        <pre><code>const createdFilm = await response.json();
+</code></pre>
+
+        <h3>¿Qué hace esta línea?</h3>
+        <p>
+            <code>response.json()</code> = Convierte la respuesta del servidor a formato JavaScript<br>
+            <code>await</code> = Espera a que termine la conversión<br>
+            <code>const createdFilm</code> = Guarda la película creada (con el ID que le asignó el servidor)
+        </p>
+
+        <h3>¿Por qué necesitamos esto?</h3>
+        <p>Cuando creas una película, el servidor te devuelve la película completa con el ID que le asignó. Es útil para
+            confirmar que se creó correctamente.</p>
+        <p>En palabras simples: "Recibe la confirmación del servidor de que la película se creó correctamente"</p>
+
+        <p>Ahora tienes:</p>
+        <pre><code>const createFilm = async (newFilm) => {
+  const response = await fetch(URL_API_FILMS, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(newFilm)
+  });
+  const createdFilm = await response.json();
+</code></pre>
+
+        <h2>Paso 9: Devolver la película creada</h2>
+        <p>El siguiente paso es añadir esta línea:</p>
+        <pre><code>return createdFilm;
+</code></pre>
+
+        <h3>¿Qué hace esta línea?</h3>
+        <p>
+            <code>return</code> = Devuelve el resultado a quien llamó a la función<br>
+            <code>createdFilm</code> = La película que acabamos de crear (con su ID nuevo)
+        </p>
+
+        <h3>¿Por qué devolver la película?</h3>
+        <ul>
+            <li>Para confirmar que se creó correctamente</li>
+            <li>Para obtener el ID que le asignó el servidor</li>
+            <li>Para poder usarla en otras partes del código</li>
+        </ul>
+        <p><b>En palabras simples</b>: "Devuelve la película recién creada con toda su información"</p>
+
+        <p>Ahora tienes:</p>
+        <pre><code>const createFilm = async (newFilm) => {
+  const response = await fetch(URL_API_FILMS, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(newFilm)
+  });
+  const createdFilm = await response.json();
+  return createdFilm;
+}
+</code></pre>
+
+
+        <p><strong>¡Felicidades! Ya tienes tu función CREATE completa.</strong></p>
+
+        <h3>¿Qué puedes hacer ahora?</h3>
+        <p>Tu función está lista para usar. Puedes llamarla así:</p>
+        <pre><code>javascript
+createFilm({
+  title: "Moana",
+  director: "Ron Clements",
+  description: "Una aventura oceánica..."
+});
+</code></pre>
+        <p><b>En palabras simples</b>: "Cierra la función CREATE - ya está lista para usar"</p>
+
+
+    </section>
+
+    <section>
+        <h1>CREAR FORMULARIO PARA AÑADIR PELÍCULA</h1>
+        <h2>Paso 1: Crear el formulario básico</h2>
+        El primer paso es añadir este código HTML en tu archivo HTML:
+        <pre><code>&lt;form id="film-form"&gt;
+  &lt;h2&gt;Añadir Nueva Película Disney&lt;/h2&gt;
+&lt;/form&gt;
+</code></pre>
+        <h3>¿Qué hace este código?</h3>
+
+        <p><code>&lt;form id="film-form"&gt;</code> Crea un formulario con un ID único para identificarlo</p>
+        <p><code>&lt;h2&gt;</code> Añade un título al formulario</p>
+        <p>El ID nos servirá para conectar el formulario con JavaScript</p>
+
+
+        <h3>¿Dónde ponerlo?</h3>
+        En tu archivo HTML, encima o debajo de donde tienes el
+        <pre><code>&lt;div id="film-section"&gt;</code></pre>
+        <p>En palabras simples: "Crea un formulario básico con título".</p>
+
+        <p>Ahora tienes:</p>
+        <pre><code>html&lt;form id="film-form"&gt;
+  &lt;h2&gt;Añadir Nueva Película Disney&lt;/h2&gt;
+&lt;/form&gt;
+</code></pre>
+
+        <h2>Paso 2: Añadir el campo para el título</h2>
+        El siguiente paso es añadir este código DENTRO del formulario:
+        <pre><code>&lt;label for="title"&gt;Título:&lt;/label&gt;
+&lt;input type="text" id="title" name="title" required&gt;
+</code></pre>
+        <h3>¿Qué hace este código?</h3>
+
+        <p><code>&lt;label for="title"&gt;</code> = Crea una etiqueta que dice "Título:"</p>
+        <p><code>&lt;input type="text" id="title"</code> = Crea un campo de texto para escribir el título</p>
+        <p><code>name="title"</code> = Le da un nombre al campo para identificarlo</p>
+        <p><code>required</code> = Hace que el campo sea obligatorio</p>
+
+
+        <h3>¿Por qué label e input separados?</h3>
+
+        <p>El label es lo que ve el usuario </p>
+        <p>El input es donde el usuario escribe </p>
+        <p>Están conectados por el
+        <pre><code>for="title"</code></pre> y
+        <pre><code>id="title"</code></pre>
+        </p>
+
+        <p>En palabras simples: "Crea un campo donde el usuario puede escribir el título de la película" </p>
+
+        <p>Ahora tienes:</p>
+        <pre><code>&lt;form id="film-form"&gt;
+  &lt;h2&gt;Añadir Nueva Película Disney&lt;/h2&gt;
+  &lt;label for="title"&gt;Título:&lt;/label&gt;
+  &lt;input type="text" id="title" name="title" required&gt;
+&lt;/form&gt;
+</code></pre>
+
+        <h2>Paso 3: Añadir el campo para el director</h2>
+        El siguiente paso es añadir este código después del campo título:
+        <pre><code>&lt;label for="director"&gt;Director:&lt;/label&gt;
+&lt;input type="text" id="director" name="director" required&gt;
+</code></pre>
+        <h3>¿Qué hace este código?</h3>
+
+        <p><code>&lt;label for="director"&gt;</code> Crea una etiqueta que dice "Director:"</p>
+        <p><code>&lt;input type="text" id="director"</code> Crea un campo de texto para escribir el director</p>
+        <p><code>name="director"</code> Le da el nombre "director" al campo</p>
+        <p><code>required</code> También hace obligatorio este campo</p>
+
+
+        <h3>¿Por qué la misma estructura?</h3>
+        <p>Cada campo del formulario sigue el mismo patrón: label + input con sus respectivos IDs y nombres. </p>
+        <p><b>En palabras simples</b>: "Crea un campo donde el usuario puede escribir el director de la película" </p>
+
+
+        <p>Ahora tienes:</p>
+        <pre><code>&lt;form id="film-form"&gt;
+  &lt;h2&gt;Añadir Nueva Película Disney&lt;/h2&gt;
+  &lt;label for="title"&gt;Título:&lt;/label&gt;
+  &lt;input type="text" id="title" name="title" required&gt;
+  &lt;label for="director"&gt;Director:&lt;/label&gt;
+  &lt;input type="text" id="director" name="director" required&gt;
+&lt;/form&gt;
+</code></pre>
+
+        <h2>Paso 4: Añadir el campo para la descripción</h2>
+        El siguiente paso es añadir este código después del campo director:
+        <pre><code>&lt;label for="description"&gt;Descripción:&lt;/label&gt;
+&lt;textarea id="description" name="description" required&gt;&lt;/textarea&gt;
+</code></pre>
+        <h3>¿Qué hace este código?</h3>
+
+        <p><code>&lt;label for="description"&gt;</code> Crea una etiqueta que dice "Descripción:"</p>
+        <p><code>&lt;textarea&gt;</code> Crea un campo de texto GRANDE (para textos largos)</p>
+        <p><code>id="description"</code> Le da el ID "description"</p>
+        <p><code>name="description"</code> Le da el nombre "description"</p>
+
+        <h3>¿Por qué textarea en lugar de input?</h3>
+
+        <pre><code>input</code></pre> es para textos cortos (título, director)
+        <pre><code>textarea</code></pre> es para textos largos (descripción de la película)
+        El usuario puede escribir varias líneas
+
+        <p><b>En palabras simples</b>: "Crea un campo grande donde el usuario puede escribir la descripción de la
+            película" </p>
+
+
+        <p>Ahora tienes:</p>
+        <pre><code>&lt;form id="film-form"&gt;
+  &lt;h2&gt;Añadir Nueva Película Disney&lt;/h2&gt;
+  &lt;label for="title"&gt;Título:&lt;/label&gt;
+  &lt;input type="text" id="title" name="title" required&gt;
+  &lt;label for="director"&gt;Director:&lt;/label&gt;
+  &lt;input type="text" id="director" name="director" required&gt;
+  &lt;label for="description"&gt;Descripción:&lt;/label&gt;
+  &lt;textarea id="description" name="description" required&gt;&lt;/textarea&gt;
+&lt;/form&gt;
+</code></pre>
+
+        <h2>Paso 5: Añadir el botón de envío</h2>
+        El siguiente paso es añadir este código después del campo descripción:
+        <pre><code>&lt;button type="submit"&gt;Crear Película&lt;/button&gt;
+</code></pre>
+        <h3>¿Qué hace este código?</h3>
+
+        <p><code>&lt;button type="submit"&gt;</code> Crea un botón que envía el formulario</p>
+        <p><code>type="submit"</code> Le dice al navegador que este botón envía los datos del formulario</p>
+        <p><code>Crear Película</code> Es el texto que aparece en el botón</p>
+
+        <h3>¿Por qué type="submit"?</h3>
+
+        <p>
+            Cuando el usuario hace clic, se ejecuta el evento "submit" del formulario
+            Esto nos permite capturar los datos y procesarlos con JavaScript
+        </p>
+
+        <p><b>En palabras simples</b>: "Crea un botón que cuando lo presionen, envíe los datos del formulario" </p>
+
+
+        <p>¡Perfecto! Ya tienes tu formulario HTML completo:</p>
+        <pre><code>html&lt;form id="film-form"&gt;
+  &lt;h2&gt;Añadir Nueva Película Disney&lt;/h2&gt;
+  &lt;label for="title"&gt;Título:&lt;/label&gt;
+  &lt;input type="text" id="title" name="title" required&gt;
+  &lt;label for="director"&gt;Director:&lt;/label&gt;
+  &lt;input type="text" id="director" name="director" required&gt;
+  &lt;label for="description"&gt;Descripción:&lt;/label&gt;
+  &lt;textarea id="description" name="description" required&gt;&lt;/textarea&gt;
+  &lt;button type="submit"&gt;Crear Película&lt;/button&gt;
+&lt;/form&gt;
+</code></pre>
+
+
+    </section>
+
+
+    <section>
+        <h1>Conectar formulario con JavaScript</h1>
+
+        <h2>Paso 1: Conectar el formulario con JavaScript</h2>
+        <p>Ahora necesitamos ir a tu archivo JavaScript y conectar el formulario. El siguiente paso es añadir este
+            código después de tu función createFilm:</p>
+        <pre><code>const filmForm = document.getElementById("film-form");</code></pre>
+        <h3>¿Qué hace esta línea?</h3>
+        <p><code>document.getElementById("film-form")</code> Busca el formulario en el HTML por su ID</p>
+        <p><code>const filmForm</code> Guarda una referencia al formulario para poder usarlo</p>
+        <p><b>En palabras simples</b>: "Conecta el formulario HTML con JavaScript"</p>
+
+        <p>Ahora tienes:</p>
+        <pre><code>// ========================================
+//  FORM HANDLER
+// ========================================
+const filmForm = document.getElementById("film-form");
+</code></pre>
+
+        <h2>Paso 2: Escuchar cuando se envía el formulario</h2>
+        <p>El siguiente paso es añadir este código después de la línea anterior:</p>
+        <pre><code>filmForm.addEventListener("submit", async (event) => {</code></pre>
+        <h3>¿Qué hace esta línea?</h3>
+        <p><code>filmForm.addEventListener</code> "Escucha" cuando algo pasa con el formulario</p>
+        <p><code>"submit"</code> Específicamente escucha cuando se envía el formulario (cuando hacen clic en el botón)
+        </p>
+        <p><code>async (event) => </code> Cuando se envíe, ejecuta esta función asíncrona</p>
+        <p><code>event</code> La información sobre lo que pasó (el envío del formulario)</p>
+        <h3>¿Cuándo se ejecuta?</h3>
+        <p>Cuando el usuario llena el formulario y hace clic en "Crear Película".</p>
+        <p>En palabras simples: "Escucha cuando el usuario envía el formulario y ejecuta código"</p>
+
+        <p>Ahora tienes:</p>
+        <pre><code>const filmForm = document.getElementById("film-form");
+filmForm.addEventListener("submit", async (event) => {
+</code></pre>
+
+        <h2>Paso 3: Evitar que la página se recargue</h2>
+        <p>El siguiente paso es añadir esta línea dentro de la función:</p>
+        <pre><code>event.preventDefault();
+</code></pre>
+        <h3>¿Qué hace esta línea?</h3>
+        <p><code>event.preventDefault()</code> Evita que el formulario haga su comportamiento normal</p>
+        <p>El comportamiento normal es recargar la página cuando se envía</p>
+        <h3>¿Por qué necesitamos esto?</h3>
+        <p>Si no lo ponemos, cuando el usuario envíe el formulario, la página se recargará</p>
+        <p>Nosotros queremos manejar el envío con JavaScript, no recargar la página</p>
+        <p>Queremos que sea más suave y moderno</p>
+        <p><b>En palabras simples:</b> "Evita que la página se recargue cuando se envíe el formulario"</p>
+        <h3>¿Has añadido esta línea?</h3>
+        <p>Cuando la tengas, te explico cómo obtener los datos que escribió el usuario.</p>
+        <p>Ahora tienes:</p>
+        <pre><code>const filmForm = document.getElementById("film-form");
+filmForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+</code></pre>
+
+        <h2>Paso 4: Obtener los datos del formulario</h2>
+        <p>El siguiente paso es añadir estas líneas:</p>
+        <pre><code>const title = document.getElementById("title").value;
+const director = document.getElementById("director").value;
+const description = document.getElementById("description").value;
+</code></pre>
+        <h3>¿Qué hacen estas líneas?</h3>
+        <p><code>document.getElementById("title").value</code> Obtiene el texto que escribió el usuario en el campo
+            título</p>
+        <p><code>document.getElementById("director").value</code> Obtiene el texto del campo director</p>
+        <p><code>document.getElementById("description").value</code> Obtiene el texto del campo descripción</p>
+        <p><code>.value</code> Es la propiedad que contiene lo que escribió el usuario</p>
+        <p>En palabras simples: "Toma los datos que escribió el usuario en cada campo del formulario"</p>
+
+        <p>Ahora tienes:</p>
+        <pre><code>const filmForm = document.getElementById("film-form");
+filmForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const title = document.getElementById("title").value;
+  const director = document.getElementById("director").value;
+  const description = document.getElementById("description").value;
+</code></pre>
+
+        <h2>Paso 5: Crear el objeto con los datos</h2>
+        <p>El siguiente paso es añadir estas líneas:</p>
+        <pre><code>const newFilm = {
+  title: title,
+  director: director,
+  description: description
+};
+</code></pre>
+        <h3>¿Qué hace este código?</h3>
+        <p><code>const newFilm = {</code> Crea un objeto llamado "newFilm"</p>
+        <p><code>title: title,</code> Pone el título que escribió el usuario</p>
+        <p><code>director: director,</code> Pone el director que escribió el usuario</p>
+        <p><code>description: description</code> Pone la descripción que escribió el usuario</p>
+        <h3>¿Por qué crear un objeto?</h3>
+        <p>Tu función createFilm espera recibir un objeto con esta estructura exacta.</p>
+        <p>En palabras simples: "Organiza los datos del usuario en un objeto que la función createFilm puede usar"</p>
+
+        <p>Ahora tienes:</p>
+        <pre><code>const filmForm = document.getElementById("film-form");
+filmForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const title = document.getElementById("title").value;
+  const director = document.getElementById("director").value;
+  const description = document.getElementById("description").value;
+  const newFilm = {
+    title: title,
+    director: director,
+    description: description
+  };
+</code></pre>
+
+        <h2>Paso 6: Llamar a la función createFilm</h2>
+        <p>El siguiente paso es añadir esta línea:</p>
+        <pre><code>const createdFilm = await createFilm(newFilm);
+</code></pre>
+        <h3>¿Qué hace esta línea?</h3>
+        <p><code>createFilm(newFilm)</code> Llama a la función que creamos antes y le pasa los datos del usuario</p>
+        <p><code>await</code> Espera a que se complete la creación de la película</p>
+        <p><code>const createdFilm</code> Guarda la película creada (con el ID que le asignó el servidor)</p>
+        <h3>¿Qué pasa aquí?</h3>
+        <p>Los datos del formulario se envían a tu base de datos</p>
+        <p>El servidor crea la película y le asigna un ID</p>
+        <p>Recibes la confirmación de que se creó correctamente</p>
+        <p><b>En palabras simples</b>: "Envía los datos del formulario a la base de datos para crear la película"</p>
+
+        <p>Ahora tienes:</p>
+        <pre><code>const filmForm = document.getElementById("film-form");
+filmForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const title = document.getElementById("title").value;
+  const director = document.getElementById("director").value;
+  const description = document.getElementById("description").value;
+  const newFilm = {
+    title: title,
+    director: director,
+    description: description
+  };
+  const createdFilm = await createFilm(newFilm);
+</code></pre>
+
+        <h2>Paso 7: Limpiar el formulario</h2>
+        <p>El siguiente paso es añadir esta línea:</p>
+        <pre><code>filmForm.reset();
+</code></pre>
+        <h3>¿Qué hace esta línea?</h3>
+        <p><code>filmForm.reset()</code> = Borra todos los campos del formulario</p>
+        <p>Los campos vuelven a estar vacíos, listos para introducir otra película</p>
+        <h3>¿Por qué limpiar el formulario?</h3>
+        <p>Después de crear una película, el usuario ve que los campos se vacían</p>
+        <p>Esto le confirma que la película se creó correctamente</p>
+        <p>Puede introducir otra película inmediatamente</p>
+        <p>En palabras simples: "Vacía todos los campos del formulario después de crear la película"</p>
+
+        <p>Ahora tienes:</p>
+        <pre><code>
+const filmForm = document.getElementById("film-form");
+filmForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const title = document.getElementById("title").value;
+  const director = document.getElementById("director").value;
+  const description = document.getElementById("description").value;
+  const newFilm = {
+    title: title,
+    director: director,
+    description: description
+  };
+  const createdFilm = await createFilm(newFilm);
+  filmForm.reset();
+  });
+</code></pre>
+
+    </section>
+</body>
+
+</html>
