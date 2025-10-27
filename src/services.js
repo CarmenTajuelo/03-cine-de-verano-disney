@@ -44,8 +44,9 @@ const printFilms = async () => {
         filmContainer.innerHTML += `<div data-film-id="${film.id}" style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
         <h1>Título de la película: ${film.title}</h1>
         <h3>Director de la película: ${film.director}</h3>
-        <p><b>Descripción de la película:</b> ${film.description}</p>
+        <p><b>Descripción de la película:</b> ${film.film_description}</p>
         <p><b>ID de la película:</b> ${film.id}</p>
+        <button onclick="populateFormForEdit('${film.id}')">Editar</button>
         <button onclick="deleteFilm('${film.id}')">Eliminar</button>
         </div>`;
         
@@ -83,6 +84,24 @@ const createFilm = async (newFilm) => {
     return createdFilm;
 };
 
+// ========================================
+//  UPDATE <<>> PUT
+// ========================================
+// 1. Creamos la función para actualizar una película existente
+const updateFilm = async (id, filmData) => {
+    // 2. Petición al servidor con el ID de la película a actualizar
+    const response = await fetch(`${URL_API_FILMS}/${id}`, {
+        // 3. Usamos el método "PUT" para reemplazar los datos
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        // 4. Enviamos los nuevos datos de la película
+        body: JSON.stringify(filmData)
+    });
+    const updatedFilm = await response.json();
+    return updatedFilm;
+};
+
+
 
 // ==========================================
 //  Form to Create New Films - Configurarion
@@ -90,24 +109,46 @@ const createFilm = async (newFilm) => {
 //1. Conectar el formulario con JavaScript. 
 // Busca el formulario en el HTML por su ID y lo guarda en filmForm para poder usarlo
 const filmForm = document.getElementById("film-form");
+const formTitle = document.querySelector("#film-form h2");
+const submitButton = document.querySelector("#film-form button[type='submit']");
+
+// Función para rellenar el formulario con datos de una película para editarla
+const populateFormForEdit = async (id) => {
+    const response = await fetch(`${URL_API_FILMS}/${id}`);
+    const film = await response.json();
+
+    document.getElementById("title").value = film.title;
+    document.getElementById("director").value = film.director;
+    document.getElementById("description").value = film.film_description;
+
+    // Guardamos el ID en el formulario para saber que estamos editando
+    filmForm.setAttribute("data-editing-id", id);
+
+    // Cambiamos el título y el botón para que el usuario sepa que está editando
+    formTitle.textContent = "Editar Película";
+    submitButton.textContent = "Actualizar Película";
+};
 
 //2. Escuchar cuando se envía el formulario
 //Escucha cuando algo pasa con el formulario, específicamente cuando se envía el formulario al hacer click en el boton submit
 filmForm.addEventListener("submit", async (event) => {
     //3. Evitar que la página se recargue cuando se envía el formulario (comportamiento by default)
     event.preventDefault();
+
+    // Comprobamos si estamos editando una película existente
+    const editingId = filmForm.getAttribute("data-editing-id");
+
     //4. Obtener la información del formulario
     //Obtitne el texto que el usuario escribió en los diferentes campos
     const title = document.getElementById("title").value;
     const director = document.getElementById("director").value;
     const description = document.getElementById("description").value;
 
-    //5. Crear objeto llamado "newFilm" con los datos. 
-    // Porque la función "createFilm" espera recibir un objeto con esta estructura exacta
-    const newFilm = {
+    //5. Crear objeto con los datos del formulario
+    const filmData = {
         title: title,
         director: director,
-        description: description
+        film_description: description
     };
     //6. Llamar a la función createFilm
     //createFilm(newFilm) llama a la función que creamos antes y le pasa los datos del usuario
@@ -115,16 +156,23 @@ filmForm.addEventListener("submit", async (event) => {
     const createdFilm = await createFilm(newFilm);
     //7.Limpiar el formulario para que esté listo para introducir otra película
     filmForm.reset();
-    //8. Actualizar la lista de películas en pantalla
-    filmContainer.innerHTML = "",
-        //9. Vuelve a cargar y mostrar todas las películas
-        await printFilms();
+
+    if (editingId) {
+        // Si hay un ID, actualizamos la película
+        await updateFilm(editingId, filmData);
+        // Limpiamos el atributo del ID y restauramos el formulario
+        filmForm.removeAttribute("data-editing-id");
+        formTitle.textContent = "Añadir Nueva Película Disney";
+        submitButton.textContent = "Crear Película";
+    } else {
+        // Si no, creamos una nueva
+        await createFilm(filmData);
+    }
+    
+    await printFilms(); // Recargamos la lista de películas
+    filmForm.reset(); // Limpiamos el formulario
 
 });
-
-
-
-
 
 
 // ========================================
