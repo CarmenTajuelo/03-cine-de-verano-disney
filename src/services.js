@@ -150,12 +150,6 @@ filmForm.addEventListener("submit", async (event) => {
         director: director,
         film_description: description
     };
-    //6. Llamar a la función createFilm
-    //createFilm(newFilm) llama a la función que creamos antes y le pasa los datos del usuario
-    //guarda la pelicula creada con el id que le asignó el servidor
-    const createdFilm = await createFilm(newFilm);
-    //7.Limpiar el formulario para que esté listo para introducir otra película
-    filmForm.reset();
 
     if (editingId) {
         // Si hay un ID, actualizamos la película
@@ -169,8 +163,8 @@ filmForm.addEventListener("submit", async (event) => {
         await createFilm(filmData);
     }
     
-    await printFilms(); // Recargamos la lista de películas
     filmForm.reset(); // Limpiamos el formulario
+    await printFilms(); // Recargamos la lista de películas
 
 });
 
