@@ -41,18 +41,14 @@ const printFilms = async () => {
         //console.log("Director de la pelicula: ", film.director);
         //console.log("Descripcion de la película:", film.description);
         //printFilms.innerHTML = `<div><h1>${book.title}</h1></div>`;
-        filmContainer.innerHTML += `<div data-film-id="${film.id}" style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+        filmContainer.innerHTML += `<div data-film-id="${film.id}" class="film-card">
         <h1>Título de la película: ${film.title}</h1>
         <h3>Director de la película: ${film.director}</h3>
         <p><b>Descripción de la película:</b> ${film.film_description}</p>
-        <p><b>ID de la película:</b> ${film.id}</p>
+        
         <button onclick="populateFormForEdit('${film.id}')">Editar</button>
         <button onclick="deleteFilm('${film.id}')">Eliminar</button>
         </div>`;
-        
-        
-
-
     });
 };
 printFilms();
@@ -108,9 +104,9 @@ const updateFilm = async (id, filmData) => {
 // ==========================================
 //1. Conectar el formulario con JavaScript. 
 // Busca el formulario en el HTML por su ID y lo guarda en filmForm para poder usarlo
-const filmForm = document.getElementById("film-form");
-const formTitle = document.querySelector("#film-form h2");
-const submitButton = document.querySelector("#film-form button[type='submit']");
+const filmForm = document.querySelector(".film-form");
+const formTitle = document.querySelector(".film-form h2");
+const submitButton = document.querySelector(".film-form button[type='submit']");
 
 // Función para rellenar el formulario con datos de una película para editarla
 const populateFormForEdit = async (id) => {
@@ -126,7 +122,10 @@ const populateFormForEdit = async (id) => {
 
     // Cambiamos el título y el botón para que el usuario sepa que está editando
     formTitle.textContent = "Editar Película";
-    submitButton.textContent = "Actualizar Película";
+    submitButton.querySelector('.btn-text').textContent = "Actualizar Película";
+    
+    // Scroll suave al formulario
+    document.getElementById('film-form').scrollIntoView({ behavior: 'smooth' });
 };
 
 //2. Escuchar cuando se envía el formulario
@@ -157,7 +156,7 @@ filmForm.addEventListener("submit", async (event) => {
         // Limpiamos el atributo del ID y restauramos el formulario
         filmForm.removeAttribute("data-editing-id");
         formTitle.textContent = "Añadir Nueva Película Disney";
-        submitButton.textContent = "Crear Película";
+        submitButton.querySelector('.btn-text').textContent = "Crear Película";
     } else {
         // Si no, creamos una nueva
         await createFilm(filmData);
@@ -165,7 +164,9 @@ filmForm.addEventListener("submit", async (event) => {
     
     filmForm.reset(); // Limpiamos el formulario
     await printFilms(); // Recargamos la lista de películas
-
+    
+    // Scroll suave a la sección de películas
+    document.getElementById('film-section').scrollIntoView({ behavior: 'smooth' });
 });
 
 
@@ -196,3 +197,33 @@ const deleteFilm = async (id) => {
         }
     }
 }
+
+// ========================================
+//  NAVEGACIÓN ACTIVA
+// ========================================
+// Función para actualizar el elemento activo del menú según el scroll
+const updateActiveNav = () => {
+    const sections = document.querySelectorAll('section[id]');
+    const navItems = document.querySelectorAll('.nav-item');
+    
+    let currentSection = '';
+    
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        if (window.pageYOffset >= sectionTop - 200) {
+            currentSection = section.getAttribute('id');
+        }
+    });
+    
+    navItems.forEach(item => {
+        item.classList.remove('active');
+        const link = item.querySelector('a');
+        if (link && link.getAttribute('href') === `#${currentSection}`) {
+            item.classList.add('active');
+        }
+    });
+};
+
+// Escuchar el evento de scroll
+window.addEventListener('scroll', updateActiveNav);
