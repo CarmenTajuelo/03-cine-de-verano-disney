@@ -175,21 +175,24 @@ filmForm.addEventListener("submit", async (event) => {
 
 //1. Crear la función principal que va a eliminar la pelicula
 const deleteFilm = async (id) => {
-    //2. Petición al servidor y guarda la respuesta en "response"
-    const response = await fetch(`${URL_API_FILMS}/${id}`, {
-        //3. Manda la orden de eliminar
-        method: "DELETE",
-        //Info de cómo enviamos los datos
-        headers: {
-            //Especifica que trabajamos con JSON
-            'Content-Type': 'application/json'
+    // Preguntar al usuario si está seguro antes de eliminar
+    const userConfirmed = window.confirm("¿Estás seguro de que quieres eliminar esta película?");
+
+    // Si el usuario hace clic en "Aceptar", userConfirmed será true
+    if (userConfirmed) {
+        //2. Petición al servidor y guarda la respuesta en "response"
+        const response = await fetch(`${URL_API_FILMS}/${id}`, {
+            //3. Manda la orden de eliminar
+            method: "DELETE"
+        });
+        //4. Verificar si la eliminación fue exitosa
+        if (response.ok) {
+            console.log(`Película con ID ${id} eliminada`);
+            // Refrescamos la lista de películas solo si se eliminó correctamente
+            await printFilms();
+        } else {
+            console.error("Error al eliminar la película");
+            alert("Hubo un error al intentar eliminar la película.");
         }
-    });
-    //4. Verificar si la eliminación fue exitosa
-    if (response.ok) {
-        console.log(`Película con ID ${id} eliminada`);
-        printFilms();
-    } else {
-        console.error("Error al eliminar la película");
     }
 }
